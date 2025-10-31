@@ -1,6 +1,7 @@
 // filepath: netlify/functions/get-songs.js
 // const { Client } = require('pg');
-import { neon } from '@netlify/neon';
+const { neon } = require('@netlify/neon');
+const songs = require('../../data/songs.json');
 const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
 
 
@@ -16,7 +17,7 @@ exports.handler = async function (event, context) {
     // const res = await client.query('SELECT * FROM songs');
     console.log("Fetching songs from database...");
     console.log(sql)
-    const [post2] = await sql`
+    await sql`
     CREATE TABLE IF NOT EXISTS songs (
         id SERIAL PRIMARY KEY,
         title VARCHAR(100) NOT NULL,
@@ -25,17 +26,30 @@ exports.handler = async function (event, context) {
         year VARCHAR(100),
         lines TEXT NOT NULL
         );`
-        console.log("Ensured songs table exists.");
-        console.log(post2);
-        const [post] = await sql`SELECT * FROM songs`;
-        console.log("Fetched songs:", post);
-        // async function ensureTable() {
-            //     await sql(`
-            // }
+
+    const insertResults = await Promise.all(
+        songs.map(song => {
+            const lines = Array.isArray(song.lines) ? song.lines.join('\n') : song.lines;
+            return sql`
+                INSERT INTO songs (title, artist, album, year, lines)
+                SELECT ${song.title}, ${song.artist || null}, ${song.album || null}, ${song.year || null}, ${lines}
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM songs WHERE title = ${song.title} AND (artist IS NOT DISTINCT FROM ${song.artist || null})
+                )`;
+        })
+    );
+
+    console.log("Inserted/ensured songs count:", insertResults.length);
+    console.log("Ensured songs table exists.");
+    const allSongs = await sql`SELECT * FROM songs`;
+    console.log("Fetched songs:", allSongs);
+    // async function ensureTable() {
+        //     await sql(`
+        // }
     // await client.end();
 
     return {
         statusCode: 200,
-        body: post ? JSON.stringify(post) : JSON.stringify([]),
+        body: JSON.stringify(allSongs || []),
     };
 };
