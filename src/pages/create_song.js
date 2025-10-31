@@ -1,7 +1,7 @@
 import React from "react"
 import { chordify } from "../utils/chordify"
 import { isUnidentifiedChords, normalizarCifrado } from "../utils/chordify"
-import createSong from "../../netlify/functions/create-song"
+// import createSong from "../../netlify/functions/create-song"
 
 const CreateSongPage = () => {
     const [newLine, setNewLine] = React.useState("")
@@ -49,7 +49,14 @@ const CreateSongPage = () => {
             alert("A song with the same title, artist, album, and year already exists.")
         } else {
             try {
-                await createSong(song)
+                fetch('/.netlify/functions/create-song', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(song)
+                })
+                // await createSong(song)
             } catch (error) {
                 console.error("Error creating song:", error)
             }
