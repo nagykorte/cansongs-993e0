@@ -14,7 +14,7 @@ exports.handler = async function (event, context) {
     // await client.connect();
     // await ensureTable();
     // const res = await client.query('SELECT * FROM songs');
-    const [post] = await sql`SELECT * FROM songs WHERE id = 1`;
+    // const [post] = await sql`SELECT * FROM songs WHERE id = 1`;
     const [post2] = await sql`
         CREATE TABLE IF NOT EXISTS songs (
             id SERIAL PRIMARY KEY,
