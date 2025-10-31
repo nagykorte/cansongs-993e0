@@ -116,7 +116,7 @@ const SongPage = (fontSize) => {
                 {data.title}
               </h1>
               <span style={{ fontSize: `${fontSize}px`, color: "#555" }}>
-                {data.lines.map((line, i) => (
+                {data.lines.split('\n').map((line, i) => (
                   <React.Fragment key={i}>
                     {chordify(line)}
                     {i < data.lines.length - 1 && <br />}
