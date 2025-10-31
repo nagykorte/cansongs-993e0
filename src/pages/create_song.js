@@ -2,6 +2,7 @@ import React from "react"
 import { chordify } from "../utils/chordify"
 import { isUnidentifiedChords, normalizarCifrado } from "../utils/chordify"
 import { getSongs, saveSong, deleteSong } from "../utils/songStorage"
+import createSong from "../../netlify/functions/create-song"
 
 const CreateSongPage = () => {
     const [newLine, setNewLine] = React.useState("")
@@ -34,8 +35,7 @@ const CreateSongPage = () => {
             setDraggedIndex(null)
         }
     }
-    const createSong = () => {
-        console.log("Song created!")
+    const createSong = async () => {
         let song = {
             title: document.getElementById("title").value,
             artist: document.getElementById("artist").value,
@@ -44,21 +44,16 @@ const CreateSongPage = () => {
             lines: lines,
         }
         console.log(song)
-        const existingSongs = getSongs()
-        console.log(existingSongs)
-        if (!existingSongs) return alert("No songs found in storage.")
-        const isDuplicate = existingSongs.some(
-            (existingSong) =>
-                existingSong.title === song.title &&
-                existingSong.artist === song.artist &&
-                existingSong.album === song.album &&
-                existingSong.year === song.year
-        )
-
+        console.log("Song created! Adding to database...")
+        const isDuplicate = false
         if (isDuplicate) {
             alert("A song with the same title, artist, album, and year already exists.")
         } else {
-            saveSong(song)
+            try {
+                await createSong(song)
+            } catch (error) {
+                console.error("Error creating song:", error)
+            }
             alert("Song added successfully!")
         }
     }
