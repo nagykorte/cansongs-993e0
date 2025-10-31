@@ -5,7 +5,7 @@ exports.handler = async function (song) {
     
     const createSong = await sql`
             INSERT INTO songs (title, artist, album, year, lines)
-            SELECT ${song.title}, ${song.artist || null}, ${song.album || null}, ${song.year || null}, ${lines.join('\n')}
+            SELECT ${song.title}, ${song.artist || null}, ${song.album || null}, ${song.year || null}, ${song.lines.join('\n')}
             RETURNING *;`;
     console.log("Created song:", createSong);
 

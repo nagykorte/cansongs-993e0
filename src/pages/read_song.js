@@ -1,5 +1,4 @@
 import React from "react";
-import JSONData from "../../data/songs.json";
 import { chordify } from "../utils/chordify.js";
 
 const SongPage = (fontSize) => {
@@ -46,13 +45,13 @@ const SongPage = (fontSize) => {
   // if (songs === null)
   React.useEffect(() => {
    if (!songs) 
-  {  fetch('/.netlify/functions/get-songs')
-      .then(res => res.json())
-      .then(data => {
-        console.log("Fetched songs:", data);
-        setSongs(data)
-  })
-  }
+    {  fetch('/.netlify/functions/get-songs')
+        .then(res => res.json())
+        .then(data => {
+          console.log("Fetched songs:", data);
+          setSongs(data)
+        })
+    }
     const chords = document.querySelectorAll(".chord");
     chords.forEach((chord) => {
       chord.addEventListener("mouseenter", (e) =>

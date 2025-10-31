@@ -1,7 +1,6 @@
 import React from "react"
 import { chordify } from "../utils/chordify"
 import { isUnidentifiedChords, normalizarCifrado } from "../utils/chordify"
-import { getSongs, saveSong, deleteSong } from "../utils/songStorage"
 import createSong from "../../netlify/functions/create-song"
 
 const CreateSongPage = () => {
@@ -35,7 +34,7 @@ const CreateSongPage = () => {
             setDraggedIndex(null)
         }
     }
-    const createSong = async () => {
+    const _createSong = async () => {
         let song = {
             title: document.getElementById("title").value,
             artist: document.getElementById("artist").value,
@@ -69,7 +68,7 @@ const CreateSongPage = () => {
             <h1>Create a New Song</h1>
             <p>Welcome to the song creation page!</p>
 
-            <form onSubmit={(e) => { e.preventDefault(); createSong() }}>
+            <form onSubmit={(e) => { e.preventDefault(); _createSong() }}>
                 <div style={{ marginBottom: "1rem" }}>
                     <label htmlFor="title" style={{ display: "block", marginBottom: "0.5rem" }}>Title:</label>
                     <input type="text" id="title" name="title" style={{ width: "30%", padding: "0.5rem" }} />
