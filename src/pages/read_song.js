@@ -88,7 +88,7 @@ const SongPage = (fontSize) => {
       }}
     >
 
-      {songs.map((data, index) => {
+      {songs && songs.map((data, index) => {
         return (
           <>
             {modalContent}
