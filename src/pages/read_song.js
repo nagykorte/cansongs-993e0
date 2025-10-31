@@ -44,13 +44,13 @@ const SongPage = (fontSize) => {
   const handleMouseLeave = () => setModalContent(null);
   // if (songs === null)
   React.useEffect(() => {
-   if (!songs) 
-    {  fetch('/.netlify/functions/get-songs')
-        .then(res => res.json())
-        .then(data => {
-          console.log("Fetched songs:", data);
-          setSongs(data)
-        })
+   if (!songs) {
+    fetch('/.netlify/functions/get-songs')
+      .then(res => res.json())
+      .then(data => {
+        console.log("Fetched songs:", data);
+        setSongs(data)
+      })
     }
     const chords = document.querySelectorAll(".chord");
     chords.forEach((chord) => {
@@ -75,7 +75,7 @@ const SongPage = (fontSize) => {
         chord.removeEventListener("mouseleave", handleMouseLeave);
       });
     };
-  }, [songs, modalContent]);
+  }, [songs]);
 
   const JSONbuildtime = () => (
     <div
