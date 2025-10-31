@@ -14,23 +14,28 @@ exports.handler = async function (event, context) {
     // await client.connect();
     // await ensureTable();
     // const res = await client.query('SELECT * FROM songs');
-    // const [post] = await sql`SELECT * FROM songs WHERE id = 1`;
+    console.log("Fetching songs from database...");
+    console.log(sql)
     const [post2] = await sql`
-        CREATE TABLE IF NOT EXISTS songs (
-            id SERIAL PRIMARY KEY,
-            title VARCHAR(100) NOT NULL,
-            artist VARCHAR(100),
-            album VARCHAR(100),
-            year VARCHAR(100),
-            lines TEXT NOT NULL
+    CREATE TABLE IF NOT EXISTS songs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(100) NOT NULL,
+        artist VARCHAR(100),
+        album VARCHAR(100),
+        year VARCHAR(100),
+        lines TEXT NOT NULL
         );`
-    // async function ensureTable() {
-    //     await sql(`
-    // }
+        console.log("Ensured songs table exists.");
+        console.log(post2);
+        const [post] = await sql`SELECT * FROM songs`;
+        console.log("Fetched songs:", post);
+        // async function ensureTable() {
+            //     await sql(`
+            // }
     // await client.end();
 
     return {
         statusCode: 200,
-        body: post2,
+        body: post ? JSON.stringify(post) : JSON.stringify([]),
     };
 };
