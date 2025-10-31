@@ -1,6 +1,7 @@
 import React from "react"
 import { chordify } from "../utils/chordify"
 import { isUnidentifiedChords, normalizarCifrado } from "../utils/chordify"
+import { getSongs, saveSong, deleteSong } from "../utils/songStorage"
 
 const CreateSongPage = () => {
     const [newLine, setNewLine] = React.useState("")
@@ -43,6 +44,23 @@ const CreateSongPage = () => {
             lines: lines,
         }
         console.log(song)
+        const existingSongs = getSongs()
+        console.log(existingSongs)
+        if (!existingSongs) return alert("No songs found in storage.")
+        const isDuplicate = existingSongs.some(
+            (existingSong) =>
+                existingSong.title === song.title &&
+                existingSong.artist === song.artist &&
+                existingSong.album === song.album &&
+                existingSong.year === song.year
+        )
+
+        if (isDuplicate) {
+            alert("A song with the same title, artist, album, and year already exists.")
+        } else {
+            saveSong(song)
+            alert("Song added successfully!")
+        }
     }
 
     return (
@@ -161,10 +179,35 @@ const CreateSongPage = () => {
                                             setNewLine("")
                                         }}
                                     />
-                                    <label htmlFor={`checkbox_${index}`} style={{ cursor: "pointer" }}>
-                                        <span role="img" aria-label="musical note">🎵</span>
-                                        <span role="img" aria-label="question mark">❓</span>
+                                    <label htmlFor={`checkbox_${index}`} style={{ cursor: "pointer", backgroundColor: "blue", padding: "0.5rem", borderRadius: "50%" }} >
+                                        {/* <span role="img" aria-label="musical note"> */}
+                                            🎵
+                                            {/* </span> */}
+                                        {/* <span role="img" aria-label="question mark">❓</span> */}
                                     </label>
+                                    <button
+                                        style={{
+                                            fontSize: "2rem",
+                                            padding: "0 0.5rem",
+                                            backgroundColor: "orange",
+                                            color: "#fff",
+                                            border: "none",
+                                            borderRadius: "50%",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={event => {
+                                            event.preventDefault()
+                                            const updatedLines = [...lines]
+                                            updatedLines.splice(index + 1, 0, line)
+                                            setLines(updatedLines)
+                                            setTimeout(() => {
+                                                document.getElementById("lines").value = ""
+                                            }, 100)
+                                        }}
+                                    >
+                                        +
+                                        {/* ⎘ */}
+                                    </button>
                                     <button
                                         style={{
                                             padding: "0.5rem",
@@ -174,7 +217,8 @@ const CreateSongPage = () => {
                                             borderRadius: "50%",
                                             cursor: "pointer",
                                         }}
-                                        onClick={() => {
+                                        onClick={e => {
+                                            e.preventDefault()
                                             const updatedLines = lines.filter((_, i) => i !== index)
                                             setLines(updatedLines)
                                         }}

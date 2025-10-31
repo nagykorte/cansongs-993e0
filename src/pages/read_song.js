@@ -3,12 +3,13 @@ import JSONData from "../../data/songs.json";
 import { chordify } from "../utils/chordify.js";
 
 const SongPage = (fontSize) => {
-
   const [modalContent, setModalContent] = React.useState(null);
-
+  const [songs, setSongs] = React.useState(null);
+  
   const handleMouseEnter = (chord, event) => {
     if (modalContent !== null) {
       setModalContent(null);
+      console.log("songs", songs);
       return;
     }
     const { clientX, clientY } = event;
@@ -44,6 +45,12 @@ const SongPage = (fontSize) => {
   const handleMouseLeave = () => setModalContent(null);
 
   React.useEffect(() => {
+    fetch('/.netlify/functions/get-songs')
+      .then(res => res.json())
+      .then(data => {
+        console.log("Fetched songs:", data);
+        setSongs(data)
+  });
     const chords = document.querySelectorAll(".chord");
     chords.forEach((chord) => {
       chord.addEventListener("mouseenter", (e) =>

@@ -16,7 +16,10 @@
   },
   "license": "0BSD",
   "dependencies": {
+    "@netlify/neon": "^0.1.0",
+    "browserify-fs": "^1.0.0",
     "gatsby": "^5.14.1",
+    "pg": "^8.16.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

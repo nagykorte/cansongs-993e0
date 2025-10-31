@@ -1,7 +1,6 @@
 import React from "react"
 import SongPage from "./read_song.js"
 import CreateSongPage from "./create_song.js"
-// import { Link } from "gatsby"
 
 const IndexPage = () => {
   const [fontSize, setFontSize] = React.useState(16)
