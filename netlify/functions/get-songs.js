@@ -1,7 +1,7 @@
 // filepath: netlify/functions/get-songs.js
 // const { Client } = require('pg');
 const { neon } = require('@netlify/neon');
-const songs = require('../../data/songs.json');
+import { songs } from ('../../data/songs.json');
 const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
 
 
