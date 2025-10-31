@@ -88,7 +88,7 @@ const SongPage = (fontSize) => {
       }}
     >
 
-      {JSONData.songs.map((data, index) => {
+      {songs.map((data, index) => {
         return (
           <>
             {modalContent}
