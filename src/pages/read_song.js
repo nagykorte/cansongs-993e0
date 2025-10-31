@@ -43,7 +43,7 @@ const SongPage = (fontSize) => {
   };
 
   const handleMouseLeave = () => setModalContent(null);
-
+  // if (songs === null)
   React.useEffect(() => {
     fetch('/.netlify/functions/get-songs')
       .then(res => res.json())
@@ -74,7 +74,7 @@ const SongPage = (fontSize) => {
         chord.removeEventListener("mouseleave", handleMouseLeave);
       });
     };
-  });
+  }, [songs, modalContent]);
 
   const JSONbuildtime = () => (
     <div
