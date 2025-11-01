@@ -2,9 +2,9 @@ const { neon } = require('@netlify/neon');
 const sql = neon();
 
 exports.handler = async function (song) {
+    let _song = JSON.parse(song);
     try {
 
-        let _song = JSON.parse(song);
         const createSong = await sql`
         INSERT INTO songs (title, artist, album, year, lines)
         SELECT ${_song.title}, ${_song.artist || null}, ${_song.album || null}, ${_song.year || null}, ${_song.lines.join('\n')}
