@@ -2,7 +2,7 @@ const { neon } = require('@netlify/neon');
 const sql = neon();
 
 exports.handler = async function (song) {
-    let _song = song;
+    let _song = JSON.parse(song.body);
     try {
 
         const createSong = await sql`
