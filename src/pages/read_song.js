@@ -4,7 +4,7 @@ import { chordify } from "../utils/chordify.js";
 const SongPage = (fontSize, search) => {
   const [modalContent, setModalContent] = React.useState(null);
   const [songs, setSongs] = React.useState(null);
-
+  console.log("Search term in SongPage:", search);
   const handleMouseEnter = (chord, event) => {
     if (modalContent !== null) {
       setModalContent(null);

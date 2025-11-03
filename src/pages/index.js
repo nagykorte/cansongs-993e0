@@ -95,6 +95,7 @@ const IndexPage = () => {
       <div style={{ flex: 1, padding: "20px" }}>
         <div style={{ flex: 1, padding: "20px" }}>
           {actualView === "read" && <SongPage fontSize={fontSize} search={search} />}
+          {console.log("search in index page:", search)}
           {actualView === "create" && <CreateSongPage />}
         </div>
       </div>
