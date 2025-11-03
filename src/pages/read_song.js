@@ -5,6 +5,7 @@ const SongPage = (fontSize, search) => {
   const [modalContent, setModalContent] = React.useState(null);
   const [songs, setSongs] = React.useState(null);
   console.log("Search term in SongPage:", search);
+  console.log("font in SongPage:", fontSize);
   const handleMouseEnter = (chord, event) => {
     if (modalContent !== null) {
       setModalContent(null);
