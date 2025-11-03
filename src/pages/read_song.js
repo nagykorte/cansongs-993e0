@@ -89,7 +89,7 @@ const SongPage = (fontSize, search) => {
     >
 
       {songs && songs.map((data, index) => {
-        if (search && !data.title.toLowerCase().includes(search.toLowerCase()) && !data.artist.toLowerCase().includes(search.toLowerCase())) return null;
+        if (String(search) !== "[object Object]" && search.length > 2 && !(data.title.toLowerCase().includes(search.toLowerCase()) || data.artist.toLowerCase().includes(search.toLowerCase()))) return null;
         return (
           <>
             {modalContent}
