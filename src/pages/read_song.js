@@ -1,7 +1,7 @@
 import React from "react";
 import { chordify } from "../utils/chordify.js";
 
-const SongPage = (fontSize, search) => {
+const SongPage = ({fontSize, search}) => {
   const [modalContent, setModalContent] = React.useState(null);
   const [songs, setSongs] = React.useState(null);
   console.log("Search term in SongPage:", search);
