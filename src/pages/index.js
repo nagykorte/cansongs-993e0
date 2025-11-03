@@ -5,13 +5,17 @@ import CreateSongPage from "./create_song.js"
 const IndexPage = () => {
   const [fontSize, setFontSize] = React.useState(16)
   const [actualView, setActualView] = React.useState("read")
+  const [search, setSearch] = React.useState("")
   const increaseFontSize = () => setFontSize((prev) => prev + 2)
   const decreaseFontSize = () => setFontSize((prev) => Math.max(prev - 2, 10))
   const btnStyle = { margin: "5px", marginRight: "1rem", padding: "0.5rem 1rem", backgroundColor: "#0079CC", color: "#000", border: "none", borderRadius: "4px", cursor: "pointer", fontweight: "bold", fontSize: "1rem", transition: "background-color 0.3s" }
   const handleSearchChange = (event) => {
     const searchText = event.target.value
-    if (searchText.length > 1) {
+    if (searchText.length > 2) {
       console.log(searchText)
+      setSearch(searchText)
+    } else {
+      setSearch("")
     }
   }
 
@@ -90,7 +94,7 @@ const IndexPage = () => {
       {/* Main Content */}
       <div style={{ flex: 1, padding: "20px" }}>
         <div style={{ flex: 1, padding: "20px" }}>
-          {actualView === "read" && <SongPage fontSize={fontSize} />}
+          {actualView === "read" && <SongPage fontSize={fontSize} search={search} />}
           {actualView === "create" && <CreateSongPage />}
         </div>
       </div>

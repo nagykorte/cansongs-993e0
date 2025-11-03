@@ -1,10 +1,10 @@
 import React from "react";
 import { chordify } from "../utils/chordify.js";
 
-const SongPage = (fontSize) => {
+const SongPage = (fontSize, search) => {
   const [modalContent, setModalContent] = React.useState(null);
   const [songs, setSongs] = React.useState(null);
-  
+
   const handleMouseEnter = (chord, event) => {
     if (modalContent !== null) {
       setModalContent(null);
@@ -36,45 +36,46 @@ const SongPage = (fontSize) => {
           alt="Chord Diagram"
           style={{ maxWidth: fontSize * 6.25 }}
         />
-            <p style={{ textAlign: "center", marginTop: "0.5rem" }}>{chord.replace("(", "").replace(")", "")}</p>
+        <p style={{ textAlign: "center", marginTop: "0.5rem" }}>{chord.replace("(", "").replace(")", "")}</p>
       </div>
     );
   };
 
   const handleMouseLeave = () => setModalContent(null);
-  // if (songs === null)
   React.useEffect(() => {
-   if (!songs) {
-    fetch('/.netlify/functions/get-songs')
-      .then(res => res.json())
-      .then(data => {
-        console.log("Fetched songs:", data);
-        setSongs(data)
-      })
-    }
-    const chords = document.querySelectorAll(".chord");
-    chords.forEach((chord) => {
-      chord.addEventListener("mouseenter", (e) =>
-        handleMouseEnter(chord.textContent, e)
-      );
-      chord.addEventListener("mouseleave", handleMouseLeave);
-      if (modalContent === null)
-        chord.addEventListener("click", (e) => {
-          handleMouseEnter(chord.textContent, e);
-        });
-      else
-        chord.addEventListener("click", () => {
-          handleMouseLeave();
-        });
-    });
-    return () => {
+    if (!songs) {
+      fetch('/.netlify/functions/get-songs')
+        .then(res => res.json())
+        .then(data => {
+          console.log("Fetched songs:", data);
+          setSongs(data)
+        })
+    } else {
+
+      const chords = document.querySelectorAll(".chord");
       chords.forEach((chord) => {
-        chord.removeEventListener("mouseenter", (e) =>
+        chord.addEventListener("mouseenter", (e) =>
           handleMouseEnter(chord.textContent, e)
         );
-        chord.removeEventListener("mouseleave", handleMouseLeave);
+        chord.addEventListener("mouseleave", handleMouseLeave);
+        if (modalContent === null)
+          chord.addEventListener("click", (e) => {
+            handleMouseEnter(chord.textContent, e);
+          });
+        else
+          chord.addEventListener("click", () => {
+            handleMouseLeave();
+          });
       });
-    };
+      return () => {
+        chords.forEach((chord) => {
+          chord.removeEventListener("mouseenter", (e) =>
+            handleMouseEnter(chord.textContent, e)
+          );
+          chord.removeEventListener("mouseleave", handleMouseLeave);
+        });
+      };
+    }
   }, [songs]);
 
   const JSONbuildtime = () => (
@@ -88,6 +89,7 @@ const SongPage = (fontSize) => {
     >
 
       {songs && songs.map((data, index) => {
+        if (search && !data.title.toLowerCase().includes(search.toLowerCase()) && !data.artist.toLowerCase().includes(search.toLowerCase())) return null;
         return (
           <>
             {modalContent}

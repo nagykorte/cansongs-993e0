@@ -10,6 +10,10 @@ exports.handler = async function (song) {
         SELECT ${_song.title}, ${_song.artist || null}, ${_song.album || null}, ${_song.year || null}, ${_song.lines.join('\n')}
         RETURNING *;`;
         console.log("Created song:", createSong);
+        return {
+            statusCode: 200,
+            body: JSON.stringify(createSong || "Error creating song"),
+        };
     } catch (error) {
         console.error("Error creating song:", error);
         return {
@@ -18,8 +22,4 @@ exports.handler = async function (song) {
         }
     }
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify(createSong || "Error creating song"),
-    };
 };
