@@ -1,7 +1,6 @@
 import React from "react"
 import { chordify } from "../utils/chordify"
 import { isUnidentifiedChords, normalizarCifrado } from "../utils/chordify"
-// import createSong from "../../netlify/functions/create-song"
 
 const CreateSongPage = () => {
     const [newLine, setNewLine] = React.useState("")
@@ -34,16 +33,16 @@ const CreateSongPage = () => {
             setDraggedIndex(null)
         }
     }
-    const _createSong = async () => {
+    const _createSong = async (password) => {
         let song = {
             title: document.getElementById("title").value,
             artist: document.getElementById("artist").value,
             album: document.getElementById("album").value,
             year: document.getElementById("year").value,
             lines: lines,
+            password
         }
         console.log(song)
-        console.log("Song created! Adding to database...")
         const isDuplicate = false
         if (isDuplicate) {
             alert("A song with the same title, artist, album, and year already exists.")
@@ -55,12 +54,17 @@ const CreateSongPage = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(song)
-                })
+                }).then(response => response.json()).then(data => {
+                    console.log('Success:', data);
+                    console.log("Song created! Adding to database...")
+                    alert("Song added successfully!")
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
                 // await createSong(song)
             } catch (error) {
                 console.error("Error creating song:", error)
             }
-            alert("Song added successfully!")
         }
     }
 
@@ -75,7 +79,10 @@ const CreateSongPage = () => {
             <h1>Create a New Song</h1>
             <p>Welcome to the song creation page!</p>
 
-            <form onSubmit={(e) => { e.preventDefault(); _createSong() }}>
+            <form onSubmit={(e) => { e.preventDefault();
+                    let pass = prompt("Enter admin password to create song:");
+                    _createSong(pass)
+                }}>
                 <div style={{ marginBottom: "1rem" }}>
                     <label htmlFor="title" style={{ display: "block", marginBottom: "0.5rem" }}>Title:</label>
                     <input type="text" id="title" name="title" style={{ width: "30%", padding: "0.5rem" }} />

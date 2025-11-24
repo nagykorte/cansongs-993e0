@@ -1,4 +1,5 @@
 import React from "react";
+import _songs from "../../data/songs.json";
 import { chordify } from "../utils/chordify.js";
 
 const SongPage = ({fontSize, search}) => {
@@ -6,6 +7,7 @@ const SongPage = ({fontSize, search}) => {
   const [songs, setSongs] = React.useState(null);
   console.log("Search term in SongPage:", search);
   console.log("font in SongPage:", fontSize);
+  console.log("Songs in SongPage:", songs);
   const handleMouseEnter = (chord, event) => {
     if (modalContent !== null) {
       setModalContent(null);
@@ -46,7 +48,25 @@ const SongPage = ({fontSize, search}) => {
   React.useEffect(() => {
     if (!songs) {
       fetch('/.netlify/functions/get-songs')
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            const contentType = res.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+              return res.json();
+            }
+          }
+          let newRes = []
+          for (let song of _songs.songs) {
+            newRes.push({
+              title: song.title,
+              artist: song.artist,
+              album: song.album,
+              year: song.year,
+              lines: song.lines.join('\n')
+            })
+          }
+          return newRes;
+        })
         .then(data => {
           console.log("Fetched songs:", data);
           setSongs(data)

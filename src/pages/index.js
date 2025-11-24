@@ -37,6 +37,23 @@ const IndexPage = () => {
           zIndex: 1000,
         }}
       >
+        <div style={{ position: "absolute", left: "1rem", display: "flex", alignItems: "center" }}>
+          <button
+            onClick={() => setActualView("read")}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#fff",
+              color: "#0079CC",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "1rem",
+            }}
+            aria-label="Refresh page"
+          >
+            Index
+          </button>
+        </div>
         <input
           type="text"
           placeholder="Search..."
