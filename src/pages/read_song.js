@@ -50,10 +50,7 @@ const SongPage = ({fontSize, search}) => {
       fetch('/.netlify/functions/get-songs')
         .then(res => {
           if (res.ok) {
-            const contentType = res.headers.get('content-type') || '';
-            if (contentType.includes('application/json')) {
-              return res.json();
-            }
+            return res.json();
           }
           let newRes = []
           for (let song of _songs.songs) {
