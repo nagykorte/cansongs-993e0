@@ -2,11 +2,11 @@ const { neon } = require('@netlify/neon');
 const sql = neon();
 
 exports.handler = async function (song) {
-    if (song.password !== "pls") return {
+    let _song = JSON.parse(song.body);
+    if (_song.password !== "pls") return {
         statusCode: 418,
         body: JSON.stringify({ error: "wtf bro chill" })
     }
-    let _song = JSON.parse(song.body);
     try {
 
         const createSong = await sql`
